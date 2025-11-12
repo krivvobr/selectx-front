@@ -70,13 +70,29 @@ function mapRowToDetail(row: any): PropertyDetail {
   };
 }
 
-export async function listProperties(): Promise<PropertyListItem[]> {
-  const { data, error } = await supabase
+export async function listProperties(filters?: {
+  type?: string;
+  purpose?: PropertyPurpose;
+  cityId?: number;
+}): Promise<PropertyListItem[]> {
+  let query = supabase
     .from("properties")
     .select(
       "*, cities(name)"
     )
     .order("created_at", { ascending: false });
+
+  if (filters?.purpose) {
+    query = query.eq("purpose", filters.purpose);
+  }
+  if (filters?.type) {
+    query = query.eq("type", filters.type);
+  }
+  if (typeof filters?.cityId === "number") {
+    query = query.eq("city_id", filters.cityId);
+  }
+
+  const { data, error } = await query;
 
   if (error) throw error;
   return (data ?? []).map(mapRowToListItem);

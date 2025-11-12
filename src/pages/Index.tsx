@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -13,6 +14,7 @@ import property1 from "@/assets/slider/sl3.png";
 import property2 from "@/assets/property-2.jpg";
 import property3 from "@/assets/property-3.jpg";
 import HeroSlider from "@/components/HeroSlider";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const Index = () => {
@@ -25,6 +27,19 @@ const Index = () => {
     queryKey: ["cities"],
     queryFn: listCities,
   });
+
+  const navigate = useNavigate();
+  const [selectedType, setSelectedType] = React.useState<string | undefined>(undefined);
+  const [selectedPurpose, setSelectedPurpose] = React.useState<string | undefined>(undefined);
+  const [selectedCityId, setSelectedCityId] = React.useState<number | undefined>(undefined);
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (selectedType) params.set("tipo", selectedType);
+    if (selectedPurpose) params.set("finalidade", selectedPurpose);
+    if (typeof selectedCityId === "number") params.set("cidade", String(selectedCityId));
+    navigate(`/imoveis${params.toString() ? `?${params.toString()}` : ""}`);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-dark">
@@ -41,7 +56,7 @@ const Index = () => {
           <div className="bg-gradient-card border border-border p-6 shadow-luxury relative top-4 z-10">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {/* Tipo */}
-              <Select>
+              <Select value={selectedType} onValueChange={setSelectedType}>
                 <SelectTrigger className="bg-background border-border" aria-label="Tipo de imóvel">
                   <SelectValue placeholder="Tipo" />
                 </SelectTrigger>
@@ -54,7 +69,7 @@ const Index = () => {
               </Select>
 
               {/* Aluguel ou Venda */}
-              <Select>
+              <Select value={selectedPurpose} onValueChange={setSelectedPurpose}>
                 <SelectTrigger className="bg-background border-border" aria-label="Aluguel ou Venda">
                   <SelectValue placeholder="Aluguel ou Venda" />
                 </SelectTrigger>
@@ -65,19 +80,19 @@ const Index = () => {
               </Select>
 
               {/* Cidades */}
-              <Select>
+              <Select value={selectedCityId !== undefined ? String(selectedCityId) : undefined} onValueChange={(val) => setSelectedCityId(Number(val))}>
                 <SelectTrigger className="bg-background border-border" aria-label="Cidades">
                   <SelectValue placeholder="Cidades" />
                 </SelectTrigger>
                 <SelectContent>
                   {(cities ?? []).map((city) => (
-                    <SelectItem key={city.id} value={city.name}>{city.name}</SelectItem>
+                    <SelectItem key={city.id} value={String(city.id)}>{city.name}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
 
               {/* Buscar */}
-              <Button variant="luxury" size="default" className="w-full">
+              <Button variant="luxury" size="default" className="w-full" onClick={handleSearch}>
                 <Search className="h-4 w-4" />
                 Buscar
               </Button>

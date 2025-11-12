@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,16 +9,66 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PropertyCard from "@/components/PropertyCard";
 import { SlidersHorizontal } from "lucide-react";
-import { listProperties } from "@/services/properties";
+import { listProperties, listCities, type PropertyPurpose } from "@/services/properties";
 
 const Properties = () => {
   const [showFilters, setShowFilters] = useState(true);
   const [priceRange, setPriceRange] = useState([0, 5000000]);
 
-  const { data: properties, isLoading, isError, error } = useQuery({
-    queryKey: ["properties", { priceRange }],
-    queryFn: () => listProperties(),
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const tipoParam = searchParams.get("tipo");
+  const finalidadeParam = searchParams.get("finalidade");
+  const cidadeParam = searchParams.get("cidade");
+
+  let typeFilter: string | undefined;
+  let purposeFilter: PropertyPurpose | undefined;
+
+  if (finalidadeParam === "venda" || finalidadeParam === "locacao") {
+    purposeFilter = finalidadeParam as PropertyPurpose;
+  }
+
+  if (tipoParam) {
+    if (tipoParam === "venda" || tipoParam === "locacao") {
+      purposeFilter = tipoParam as PropertyPurpose;
+    } else {
+      typeFilter = tipoParam;
+    }
+  }
+
+  const cityIdFilter = cidadeParam ? Number(cidadeParam) : undefined;
+
+  // Local UI state for controlled filters, initialized from URL params
+  const [selectedType, setSelectedType] = useState<string | undefined>(typeFilter);
+  const [selectedPurpose, setSelectedPurpose] = useState<PropertyPurpose | undefined>(purposeFilter);
+  const [selectedCityId, setSelectedCityId] = useState<number | undefined>(cityIdFilter);
+
+  // Load cities for location filter
+  const { data: cities } = useQuery({
+    queryKey: ["cities"],
+    queryFn: listCities,
   });
+
+  const { data: properties, isLoading, isError, error } = useQuery({
+    queryKey: [
+      "properties",
+      { priceRange, typeFilter, purposeFilter, cityIdFilter },
+    ],
+    queryFn: () =>
+      listProperties({
+        type: typeFilter,
+        purpose: purposeFilter,
+        cityId: cityIdFilter,
+      }),
+  });
+
+  const applyFilters = () => {
+    const params = new URLSearchParams();
+    if (selectedType) params.set("tipo", selectedType);
+    if (selectedPurpose) params.set("finalidade", selectedPurpose);
+    if (typeof selectedCityId === "number") params.set("cidade", String(selectedCityId));
+    setSearchParams(params);
+  };
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -59,12 +110,11 @@ const Properties = () => {
                       <label className="text-sm font-medium text-foreground mb-2 block">
                         Tipo de Imóvel
                       </label>
-                      <Select>
+                      <Select value={selectedType} onValueChange={setSelectedType}>
                         <SelectTrigger className="bg-background border-border">
                           <SelectValue placeholder="Todos" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="todos">Todos</SelectItem>
                           <SelectItem value="apartamento">Apartamento</SelectItem>
                           <SelectItem value="casa">Casa</SelectItem>
                           <SelectItem value="cobertura">Cobertura</SelectItem>
@@ -78,7 +128,7 @@ const Properties = () => {
                       <label className="text-sm font-medium text-foreground mb-2 block">
                         Finalidade
                       </label>
-                      <Select>
+                      <Select value={selectedPurpose} onValueChange={(val) => setSelectedPurpose(val as PropertyPurpose)}>
                         <SelectTrigger className="bg-background border-border">
                           <SelectValue placeholder="Venda ou Locação" />
                         </SelectTrigger>
@@ -91,12 +141,18 @@ const Properties = () => {
 
                     <div>
                       <label className="text-sm font-medium text-foreground mb-2 block">
-                        Localização
+                        Cidade
                       </label>
-                      <Input
-                        placeholder="Cidade, bairro ou CEP"
-                        className="bg-background border-border"
-                      />
+                      <Select value={selectedCityId !== undefined ? String(selectedCityId) : undefined} onValueChange={(val) => setSelectedCityId(Number(val))}>
+                        <SelectTrigger className="bg-background border-border">
+                          <SelectValue placeholder="Todas" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {(cities ?? []).map((city) => (
+                            <SelectItem key={city.id} value={String(city.id)}>{city.name}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
 
                     <div>
@@ -169,7 +225,7 @@ const Properties = () => {
                       </div>
                     </div>
 
-                    <Button variant="luxury" className="w-full">
+                    <Button variant="luxury" className="w-full" onClick={applyFilters}>
                       Aplicar Filtros
                     </Button>
                   </div>
