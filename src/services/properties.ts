@@ -34,12 +34,16 @@ export interface PropertyDetail extends PropertyListItem {
 }
 
 function mapRowToListItem(row: any): PropertyListItem {
+  const locationParts = [];
+  if (row.address) locationParts.push(row.address);
+  if (row.cities?.name) locationParts.push(row.cities.name);
+
   return {
     id: String(row.id),
     image: row.image_url ?? "/placeholder.svg",
     title: row.title ?? "Imóvel",
     type: row.type ?? "",
-    location: row.location ?? "",
+    location: locationParts.join(", "),
     price: Number(row.price ?? 0),
     purpose: (row.purpose as PropertyPurpose) ?? "venda",
     bedrooms: Number(row.bedrooms ?? 0),
@@ -69,7 +73,9 @@ function mapRowToDetail(row: any): PropertyDetail {
 export async function listProperties(): Promise<PropertyListItem[]> {
   const { data, error } = await supabase
     .from("properties")
-    .select("*")
+    .select(
+      "*, cities(name)"
+    )
     .order("created_at", { ascending: false });
 
   if (error) throw error;
@@ -79,7 +85,9 @@ export async function listProperties(): Promise<PropertyListItem[]> {
 export async function getPropertyById(id: string): Promise<PropertyDetail | null> {
   const { data, error } = await supabase
     .from("properties")
-    .select("*")
+    .select(
+      "*, cities(name)"
+    )
     .eq("id", id)
     .maybeSingle();
 

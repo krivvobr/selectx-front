@@ -54,7 +54,7 @@ const PropertyCard = ({
 
       <div className="p-6 space-y-4">
         <div>
-          <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-1">
+          <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-1 capitalize">
             {title}
           </h3>
           <div className="flex items-center gap-2 text-muted-foreground text-sm">
