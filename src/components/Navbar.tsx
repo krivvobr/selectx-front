@@ -101,13 +101,7 @@ const Navbar = () => {
             >
               Lançamentos
             </Link>
-            <Link
-              to="/leads"
-              className="block text-foreground hover:text-primary transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Leads
-            </Link>
+   
             <a href="tel:+554832633090" className="block text-foreground hover:text-primary transition-colors">
               (48) 3263-3090
             </a>

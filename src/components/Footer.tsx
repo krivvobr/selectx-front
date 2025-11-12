@@ -65,13 +65,17 @@ const Footer = () => {
             <h3 className="font-semibold text-foreground mb-4">Redes Sociais</h3>
             <div className="flex gap-4">
               <a
-                href="#"
+                href="https://www.instagram.com/selectx_negociosimobiliarios/"
+                   target="_blank"
+                rel="noopener noreferrer"
                 className="bg-secondary p-2 rounded-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300"
               >
                 <Instagram className="h-5 w-5" />
               </a>
               <a
-                href="#"
+                href="https://www.facebook.com/select.x.tijucas/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-secondary p-2 rounded-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300"
               >
                 <Facebook className="h-5 w-5" />
@@ -82,7 +86,7 @@ const Footer = () => {
 
         <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm">
-            © 2024 SelectX Imobiliarias. Todos os direitos reservados.
+            © 2025 SelectX Imobiliarias. Todos os direitos reservados.
           </p>
           <div className="flex gap-6">
             <Link to="/politica-privacidade" className="text-muted-foreground hover:text-primary transition-colors text-sm">

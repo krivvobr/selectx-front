@@ -48,12 +48,12 @@ const Index = () => {
       {/* Hero Slider with bottom-anchored search */}
       <HeroSlider
         slides={[
-          { src: heroImage, alt: "Ambiente de luxo" },
-          { src: property1, alt: "Apartamento moderno" },
+          { srcDesktop: heroImage, srcMobile: "/slider/01-mobile.png", alt: "Ambiente de luxo" },
+          { srcDesktop: property1, srcMobile: "/slider/02-mobile.jpg", alt: "Apartamento moderno" },
 
         ]}
         bottomContent={
-          <div className="bg-gradient-card border border-border p-6 shadow-luxury relative top-4 z-10">
+          <div className="bg-gradient-card border border-border p-6 shadow-luxury relative top-4 sm:top-[-20px] z-10">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {/* Tipo */}
               <Select value={selectedType} onValueChange={setSelectedType}>
