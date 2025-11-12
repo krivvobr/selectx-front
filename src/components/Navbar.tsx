@@ -50,9 +50,7 @@ const Navbar = () => {
             <Link to="/imoveis?destaque=lancamentos" className="text-foreground hover:text-primary transition-colors">
               Lançamentos
             </Link>
-            <Link to="/leads" className="text-foreground hover:text-primary transition-colors">
-              Leads
-            </Link>
+
             <a href="tel:+554832633090" className="text-muted-foreground hover:text-primary transition-colors text-sm">
               (48) 3263-3090
             </a>
