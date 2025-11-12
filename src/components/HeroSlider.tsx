@@ -28,14 +28,14 @@ const HeroSlider = ({ slides, intervalMs = 6000, bottomContent, className }: Her
   const goNext = () => setCurrent((prev) => (prev + 1) % slides.length);
 
   return (
-    <section className={`relative h-[60vh] flex items-center justify-center overflow-hidden pt-20 ${className ?? ""}`}> 
+    <section className={`relative h-[600px] flex items-center justify-center overflow-hidden ${className ?? ""}`}> 
       {/* Slides */}
       {slides.map((slide, idx) => (
         <div
           key={idx}
-          className={`absolute inset-0 transition-opacity duration-700 ease-out ${idx === current ? "opacity-100" : "opacity-0"}`}
+          className={`absolute h-auto mt-14 inset-0 transition-opacity duration-700 ease-out ${idx === current ? "opacity-100" : "opacity-0"}`}
         >
-          <img src={slide.src} alt={slide.alt ?? `slide-${idx}`} className="w-full h-full object-cover" />
+          <img src={slide.src} alt={slide.alt ?? `slide-${idx}`} className="w-full h-full object-contain" />
         </div>
       ))}
       {/* Overlay gradient */}

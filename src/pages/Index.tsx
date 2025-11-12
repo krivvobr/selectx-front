@@ -13,6 +13,7 @@ import property1 from "@/assets/slider/sl3.png";
 import property2 from "@/assets/property-2.jpg";
 import property3 from "@/assets/property-3.jpg";
 import HeroSlider from "@/components/HeroSlider";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   const { data: featuredProperties, isLoading, isError, error } = useQuery({
@@ -114,9 +115,9 @@ const Index = () => {
           </div>
 
           <div className="text-center mt-12">
-            <Button variant="luxury" size="lg">
+            <Link to="/imoveis" className="text-primary underline-offset-4 hover:underline border border-gray-500 p-4 px-4 ">
               Ver Todos os Imóveis
-            </Button>
+            </Link>
           </div>
         </div>
       </section>

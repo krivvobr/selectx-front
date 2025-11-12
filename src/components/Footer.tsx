@@ -9,7 +9,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <img src="/selectx-logo.svg" alt="SelectX Imobiliarias" className="h-8 md:h-10 w-auto" />
+              <img src="/logo.png" alt="SelectX Imobiliarias" className="h-8 md:h-10 w-auto" />
             </div>
             <p className="text-muted-foreground text-sm">
               Encontre o imóvel dos seus sonhos com profissionalismo e dedicação.
