@@ -8,8 +8,8 @@ import PropertyCard from "@/components/PropertyCard";
 import { useQuery } from "@tanstack/react-query";
 import { listProperties, listCities } from "@/services/properties";
 import { Search, Award, Users, Shield, TrendingUp } from "lucide-react";
-import heroImage from "@/assets/hero-image.jpg";
-import property1 from "@/assets/property-1.jpg";
+import heroImage from "@/assets/slider/sl2.png";
+import property1 from "@/assets/slider/sl3.png";
 import property2 from "@/assets/property-2.jpg";
 import property3 from "@/assets/property-3.jpg";
 import HeroSlider from "@/components/HeroSlider";
@@ -34,11 +34,10 @@ const Index = () => {
         slides={[
           { src: heroImage, alt: "Ambiente de luxo" },
           { src: property1, alt: "Apartamento moderno" },
-          { src: property2, alt: "Cobertura luxuosa" },
-          { src: property3, alt: "Casa com piscina" },
+
         ]}
         bottomContent={
-          <div className="bg-gradient-card border border-border p-6 shadow-luxury">
+          <div className="bg-gradient-card border border-border p-6 shadow-luxury relative top-4 z-10">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {/* Tipo */}
               <Select>
