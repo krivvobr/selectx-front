@@ -4,7 +4,7 @@ export type PropertyPurpose = "venda" | "locacao";
 
 export interface PropertyListItem {
   id: string;
-  image: string;
+  cover_image: string;
   title: string;
   type: string;
   location: string;
@@ -40,7 +40,7 @@ function mapRowToListItem(row: any): PropertyListItem {
 
   return {
     id: String(row.id),
-    image: row.image_url ?? "/placeholder.svg",
+    cover_image: row.cover_image ?? row.image_url ?? "/placeholder.svg",
     title: row.title ?? "Imóvel",
     type: row.type ?? "",
     location: locationParts.join(", "),
@@ -65,7 +65,7 @@ function mapRowToDetail(row: any): PropertyDetail {
     financing: row.financing ?? undefined,
     description: row.description ?? undefined,
     amenities: (row.amenities as string[]) ?? undefined,
-    images: (row.images as string[]) ?? (row.image_url ? [row.image_url] : undefined),
+    images: (row.images as string[]) ?? (row.cover_image ? [row.cover_image] : undefined),
     broker: row.broker ?? undefined,
   };
 }

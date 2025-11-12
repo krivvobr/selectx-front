@@ -37,7 +37,7 @@ const PropertyDetail = () => {
   });
   const images = (property?.images && property.images.length > 0)
     ? property.images
-    : (property?.image ? [property.image] : ["/placeholder.svg"]);
+    : (property?.cover_image ? [property.cover_image] : ["/placeholder.svg"]);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

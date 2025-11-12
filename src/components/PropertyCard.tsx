@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 interface PropertyCardProps {
   id: string;
-  image: string;
+  cover_image: string;
   title: string;
   type: string;
   location: string;
@@ -17,7 +17,7 @@ interface PropertyCardProps {
 
 const PropertyCard = ({
   id,
-  image,
+  cover_image,
   title,
   type,
   location,
@@ -36,7 +36,7 @@ const PropertyCard = ({
     <div className="group bg-gradient-card overflow-hidden border border-border hover:border-primary/50 transition-all duration-300 shadow-card hover:shadow-luxury">
       <div className="relative overflow-hidden aspect-[4/3]">
         <img
-          src={image}
+          src={cover_image}
           alt={title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
