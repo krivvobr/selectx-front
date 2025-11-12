@@ -246,7 +246,7 @@ const PropertyDetail = () => {
               </Card>
 
               {/* Amenities */}
-              <Card className="bg-gradient-card border-border p-6">
+              {/* <Card className="bg-gradient-card border-border p-6">
                 <h2 className="text-xl font-semibold text-foreground mb-4">
                   Comodidades
                 </h2>
@@ -258,17 +258,17 @@ const PropertyDetail = () => {
                     </div>
                   ))}
                 </div>
-              </Card>
+              </Card> */}
 
               {/* Map */}
-              <Card className="bg-gradient-card border-border p-6">
+              {/* <Card className="bg-gradient-card border-border p-6">
                 <h2 className="text-xl font-semibold text-foreground mb-4">
                   Localização
                 </h2>
                 <div className="aspect-video bg-muted flex items-center justify-center">
                   <p className="text-muted-foreground">Mapa integrado aqui</p>
                 </div>
-              </Card>
+              </Card> */}
             </div>
 
             {/* Sidebar */}
