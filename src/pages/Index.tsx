@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
 import PropertyCard from "@/components/PropertyCard";
 import { useQuery } from "@tanstack/react-query";
-import { listProperties } from "@/services/properties";
+import { listProperties, listCities } from "@/services/properties";
 import { Search, Award, Users, Shield, TrendingUp } from "lucide-react";
 import heroImage from "@/assets/hero-image.jpg";
 import property1 from "@/assets/property-1.jpg";
@@ -20,14 +20,10 @@ const Index = () => {
     queryFn: () => listProperties(),
   });
 
-  const cities = [
-    "São Paulo - SP",
-    "Rio de Janeiro - RJ",
-    "Florianópolis - SC",
-    "Curitiba - PR",
-    "Belo Horizonte - MG",
-    "Porto Alegre - RS",
-  ];
+  const { data: cities } = useQuery({
+    queryKey: ["cities"],
+    queryFn: listCities,
+  });
 
   return (
     <div className="min-h-screen bg-gradient-dark">
@@ -74,8 +70,8 @@ const Index = () => {
                   <SelectValue placeholder="Cidades" />
                 </SelectTrigger>
                 <SelectContent>
-                  {cities.map((city) => (
-                    <SelectItem key={city} value={city}>{city}</SelectItem>
+                  {(cities ?? []).map((city) => (
+                    <SelectItem key={city.id} value={city.name}>{city.name}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>

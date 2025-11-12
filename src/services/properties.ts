@@ -91,6 +91,22 @@ export async function getPropertyById(id: string): Promise<PropertyDetail | null
     .eq("id", id)
     .maybeSingle();
 
-  if (error) throw error;
-  return data ? mapRowToDetail(data) : null;
-}
+    if (error) throw error;
+
+    return data ? mapRowToDetail(data) : null;
+
+  }
+
+  
+
+  export async function listCities(): Promise<{ id: number; name: string }[]> {
+
+    const { data, error } = await supabase.from("cities").select("id, name");
+
+    if (error) throw error;
+
+    return data ?? [];
+
+  }
+
+  
