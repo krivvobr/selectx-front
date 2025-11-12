@@ -193,12 +193,12 @@ const PropertyDetail = () => {
                       <Maximize className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground">Área Útil</p>
+                      <p className="text-sm text-muted-foreground">Área em m²</p>
                       <p className="font-semibold text-foreground">{property.area}m²</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3">
+                  {/* <div className="flex items-center gap-3">
                     <div className="bg-primary/10 p-3">
                       <Maximize className="h-5 w-5 text-primary" />
                     </div>
@@ -206,8 +206,8 @@ const PropertyDetail = () => {
                       <p className="text-sm text-muted-foreground">Área Total</p>
                       <p className="font-semibold text-foreground">{property.totalArea ?? 0}m²</p>
                   </div>
-                </div>
-
+                </div> */}
+{/* 
                   <div className="flex items-center gap-3">
                     <div className="bg-primary/10 p-3">
                       <Home className="h-5 w-5 text-primary" />
@@ -216,7 +216,7 @@ const PropertyDetail = () => {
                       <p className="text-sm text-muted-foreground">Andar</p>
                       <p className="font-semibold text-foreground">{property.floor ?? 0}º</p>
                   </div>
-                </div>
+                </div> */}
               </div>
 
                 <div className="mt-6 pt-6 border-t border-border flex gap-6">
