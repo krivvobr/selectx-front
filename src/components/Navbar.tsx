@@ -50,6 +50,9 @@ const Navbar = () => {
             <Link to="/imoveis?destaque=lancamentos" className="text-foreground hover:text-primary transition-colors">
               Lançamentos
             </Link>
+            <Link to="/leads" className="text-foreground hover:text-primary transition-colors">
+              Leads
+            </Link>
             <a href="tel:+554832633090" className="text-muted-foreground hover:text-primary transition-colors text-sm">
               (48) 3263-3090
             </a>
@@ -99,6 +102,13 @@ const Navbar = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Lançamentos
+            </Link>
+            <Link
+              to="/leads"
+              className="block text-foreground hover:text-primary transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Leads
             </Link>
             <a href="tel:+554832633090" className="block text-foreground hover:text-primary transition-colors">
               (48) 3263-3090

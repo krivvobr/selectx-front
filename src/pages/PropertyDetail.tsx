@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,6 +23,9 @@ import {
   MessageCircle
 } from "lucide-react";
 import { getPropertyById } from "@/services/properties";
+import { createLead } from "@/services/leads";
+import { useToast } from "@/components/ui/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 
 const PropertyDetail = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -35,6 +38,44 @@ const PropertyDetail = () => {
   const images = (property?.images && property.images.length > 0)
     ? property.images
     : (property?.image ? [property.image] : ["/placeholder.svg"]);
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+  const { toast } = useToast();
+
+  const mutation = useMutation({
+    mutationFn: createLead,
+    onSuccess: () => {
+      setName("");
+      setEmail("");
+      setPhone("");
+      setMessage("");
+      toast({
+        title: "Contato enviado com sucesso!",
+        description: "Entraremos em contato em breve.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Erro ao enviar contato.",
+        description: "Tente novamente mais tarde.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    mutation.mutate({
+      name,
+      email,
+      phone,
+      message,
+      property_url: window.location.href,
+    });
+  };
 
   const nextImage = () => {
     setCurrentImage((prev) => (prev + 1) % images.length);
@@ -279,27 +320,36 @@ const PropertyDetail = () => {
                   Entre em Contato
                 </h2>
 
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={handleSubmit}>
                   <Input
                     placeholder="Seu nome"
                     className="bg-background border-border"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                   <Input
                     type="email"
                     placeholder="Seu e-mail"
                     className="bg-background border-border"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                   <Input
                     type="tel"
                     placeholder="Seu telefone"
                     className="bg-background border-border"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                   />
                   <Textarea
                     placeholder="Mensagem (opcional)"
                     className="bg-background border-border min-h-24"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                   />
-                  <Button variant="luxury" className="w-full" size="lg">
-                    Agendar Visita
+                  <input type="hidden" name="property_url" value={window.location.href} />
+                  <Button variant="luxury" className="w-full" size="lg" type="submit" disabled={mutation.isPending}>
+                    {mutation.isPending ? "Enviando..." : "Agendar Visita"}
                   </Button>
                 </form>
 
@@ -339,6 +389,7 @@ const PropertyDetail = () => {
       </div>
 
       <Footer />
+      <Toaster />
     </div>
   );
 };
