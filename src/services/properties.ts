@@ -73,7 +73,7 @@ function mapRowToDetail(row: any): PropertyDetail {
 export async function listProperties(filters?: {
   type?: string;
   purpose?: PropertyPurpose;
-  cityId?: number;
+  cityId?: string;
 }): Promise<PropertyListItem[]> {
   let query = supabase
     .from("properties")
@@ -88,7 +88,7 @@ export async function listProperties(filters?: {
   if (filters?.type) {
     query = query.eq("type", filters.type);
   }
-  if (typeof filters?.cityId === "number") {
+  if (filters?.cityId) {
     query = query.eq("city_id", filters.cityId);
   }
 

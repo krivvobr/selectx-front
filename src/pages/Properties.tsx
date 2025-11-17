@@ -36,12 +36,12 @@ const Properties = () => {
     }
   }
 
-  const cityIdFilter = cidadeParam ? Number(cidadeParam) : undefined;
+  const cityIdFilter = cidadeParam || undefined;
 
   // Local UI state for controlled filters, initialized from URL params
   const [selectedType, setSelectedType] = useState<string | undefined>(typeFilter);
   const [selectedPurpose, setSelectedPurpose] = useState<PropertyPurpose | undefined>(purposeFilter);
-  const [selectedCityId, setSelectedCityId] = useState<number | undefined>(cityIdFilter);
+  const [selectedCityId, setSelectedCityId] = useState<string | undefined>(cityIdFilter);
 
   // Load cities for location filter
   const { data: cities } = useQuery({
@@ -66,7 +66,7 @@ const Properties = () => {
     const params = new URLSearchParams();
     if (selectedType) params.set("tipo", selectedType);
     if (selectedPurpose) params.set("finalidade", selectedPurpose);
-    if (typeof selectedCityId === "number") params.set("cidade", String(selectedCityId));
+    if (selectedCityId) params.set("cidade", selectedCityId);
     setSearchParams(params);
   };
 
@@ -143,7 +143,12 @@ const Properties = () => {
                       <label className="text-sm font-medium text-foreground mb-2 block">
                         Cidade
                       </label>
-                      <Select value={selectedCityId !== undefined ? String(selectedCityId) : undefined} onValueChange={(val) => setSelectedCityId(Number(val))}>
+                      <Select
+                        value={selectedCityId}
+                        onValueChange={(val) => {
+                          setSelectedCityId(val || undefined);
+                        }}
+                      >
                         <SelectTrigger className="bg-background border-border">
                           <SelectValue placeholder="Todas" />
                         </SelectTrigger>

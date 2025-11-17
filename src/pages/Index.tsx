@@ -31,13 +31,13 @@ const Index = () => {
   const navigate = useNavigate();
   const [selectedType, setSelectedType] = React.useState<string | undefined>(undefined);
   const [selectedPurpose, setSelectedPurpose] = React.useState<string | undefined>(undefined);
-  const [selectedCityId, setSelectedCityId] = React.useState<number | undefined>(undefined);
+  const [selectedCityId, setSelectedCityId] = React.useState<string | undefined>(undefined);
 
   const handleSearch = () => {
     const params = new URLSearchParams();
     if (selectedType) params.set("tipo", selectedType);
     if (selectedPurpose) params.set("finalidade", selectedPurpose);
-    if (typeof selectedCityId === "number") params.set("cidade", String(selectedCityId));
+    if (selectedCityId) params.set("cidade", selectedCityId);
     navigate(`/imoveis${params.toString() ? `?${params.toString()}` : ""}`);
   };
 
@@ -80,7 +80,12 @@ const Index = () => {
               </Select>
 
               {/* Cidades */}
-              <Select value={selectedCityId !== undefined ? String(selectedCityId) : undefined} onValueChange={(val) => setSelectedCityId(Number(val))}>
+              <Select
+                value={selectedCityId}
+                onValueChange={(val) => {
+                  setSelectedCityId(val || undefined);
+                }}
+              >
                 <SelectTrigger className="bg-background border-border" aria-label="Cidades">
                   <SelectValue placeholder="Cidades" />
                 </SelectTrigger>
