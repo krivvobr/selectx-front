@@ -98,6 +98,40 @@ export async function listProperties(filters?: {
   return (data ?? []).map(mapRowToListItem);
 }
 
+export async function listPropertiesPaginated(filters?: {
+  type?: string;
+  purpose?: PropertyPurpose;
+  cityId?: string;
+  page?: number;
+  pageSize?: number;
+}): Promise<{ items: PropertyListItem[]; total: number }> {
+  const page = Math.max(1, Number(filters?.page ?? 1));
+  const pageSize = Math.max(1, Number(filters?.pageSize ?? 20));
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  let query = supabase
+    .from("properties")
+    .select("*, cities(name)", { count: "exact" })
+    .order("created_at", { ascending: false })
+    .range(from, to);
+
+  if (filters?.purpose) {
+    query = query.eq("purpose", filters.purpose);
+  }
+  if (filters?.type) {
+    query = query.eq("type", filters.type);
+  }
+  if (filters?.cityId) {
+    query = query.eq("city_id", filters.cityId);
+  }
+
+  const { data, error, count } = await query;
+
+  if (error) throw error;
+  return { items: (data ?? []).map(mapRowToListItem), total: count ?? 0 };
+}
+
 export async function getPropertyById(id: string): Promise<PropertyDetail | null> {
   const { data, error } = await supabase
     .from("properties")

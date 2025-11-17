@@ -9,7 +9,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PropertyCard from "@/components/PropertyCard";
 import { SlidersHorizontal } from "lucide-react";
-import { listProperties, listCities, type PropertyPurpose } from "@/services/properties";
+import { listPropertiesPaginated, listCities, type PropertyPurpose } from "@/services/properties";
 
 const Properties = () => {
   const [showFilters, setShowFilters] = useState(true);
@@ -20,6 +20,7 @@ const Properties = () => {
   const tipoParam = searchParams.get("tipo");
   const finalidadeParam = searchParams.get("finalidade");
   const cidadeParam = searchParams.get("cidade");
+  const paginaParam = searchParams.get("pagina");
 
   let typeFilter: string | undefined;
   let purposeFilter: PropertyPurpose | undefined;
@@ -49,16 +50,20 @@ const Properties = () => {
     queryFn: listCities,
   });
 
-  const { data: properties, isLoading, isError, error } = useQuery({
+  const currentPage = Math.max(1, Number(paginaParam ?? 1));
+
+  const { data: paged, isLoading, isError, error } = useQuery({
     queryKey: [
       "properties",
-      { priceRange, typeFilter, purposeFilter, cityIdFilter },
+      { priceRange, typeFilter, purposeFilter, cityIdFilter, currentPage },
     ],
     queryFn: () =>
-      listProperties({
+      listPropertiesPaginated({
         type: typeFilter,
         purpose: purposeFilter,
         cityId: cityIdFilter,
+        page: currentPage,
+        pageSize: 20,
       }),
   });
 
@@ -67,6 +72,7 @@ const Properties = () => {
     if (selectedType) params.set("tipo", selectedType);
     if (selectedPurpose) params.set("finalidade", selectedPurpose);
     if (selectedCityId) params.set("cidade", selectedCityId);
+    params.set("pagina", "1");
     setSearchParams(params);
   };
 
@@ -88,9 +94,9 @@ const Properties = () => {
             <h1 className="text-4xl font-bold text-foreground mb-2">
               Encontre seu Imóvel Ideal
             </h1>
-            <p className="text-muted-foreground">
-              {(properties?.length ?? 0)} imóveis encontrados
-            </p>
+              <p className="text-muted-foreground">
+                {(paged?.total ?? 0)} imóveis encontrados
+              </p>
           </div>
 
           <div className="flex gap-8">
@@ -276,18 +282,40 @@ const Properties = () => {
               )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {(properties ?? []).map((property) => (
+                {(paged?.items ?? []).map((property) => (
                   <PropertyCard key={property.id} {...property} />
                 ))}
               </div>
 
               {/* Pagination */}
               <div className="mt-12 flex justify-center gap-2">
-                <Button variant="outline">Anterior</Button>
-                <Button variant="default">1</Button>
-                <Button variant="outline">2</Button>
-                <Button variant="outline">3</Button>
-                <Button variant="outline">Próximo</Button>
+                {(() => {
+                  const total = paged?.total ?? 0;
+                  const totalPages = Math.max(1, Math.ceil(total / 20));
+                  const prevDisabled = currentPage <= 1;
+                  const nextDisabled = currentPage >= totalPages;
+                  const goto = (page: number) => {
+                    const params = new URLSearchParams();
+                    if (selectedType) params.set("tipo", selectedType);
+                    if (selectedPurpose) params.set("finalidade", selectedPurpose);
+                    if (selectedCityId) params.set("cidade", selectedCityId);
+                    params.set("pagina", String(page));
+                    setSearchParams(params);
+                  };
+                  return (
+                    <>
+                      <Button variant="outline" disabled={prevDisabled} onClick={() => goto(currentPage - 1)}>Anterior</Button>
+                      <Button variant="default">{currentPage}</Button>
+                      {currentPage + 1 <= totalPages && (
+                        <Button variant="outline" onClick={() => goto(currentPage + 1)}>{currentPage + 1}</Button>
+                      )}
+                      {currentPage + 2 <= totalPages && (
+                        <Button variant="outline" onClick={() => goto(currentPage + 2)}>{currentPage + 2}</Button>
+                      )}
+                      <Button variant="outline" disabled={nextDisabled} onClick={() => goto(currentPage + 1)}>Próximo</Button>
+                    </>
+                  );
+                })()}
               </div>
             </div>
           </div>
