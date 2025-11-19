@@ -29,7 +29,7 @@ const HeroSlider = ({ slides, intervalMs = 6000, bottomContent, className }: Her
   const goNext = () => setCurrent((prev) => (prev + 1) % slides.length);
 
   return (
-    <section className={`relative h-[760px] sm:h-[600px] flex items-center justify-center overflow-hidden ${className ?? ""}`}> 
+    <section className={`relative h-[760px] sm:h-[680px] flex items-center justify-center overflow-hidden ${className ?? ""}`}> 
       {/* Slides */}
       {slides.map((slide, idx) => (
         <div

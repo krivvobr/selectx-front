@@ -16,6 +16,7 @@ import property3 from "@/assets/property-3.jpg";
 import HeroSlider from "@/components/HeroSlider";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { listBanners } from "@/services/banners";
 
 const Index = () => {
   const { data: featuredProperties, isLoading, isError, error } = useQuery({
@@ -33,6 +34,11 @@ const Index = () => {
   const [selectedPurpose, setSelectedPurpose] = React.useState<string | undefined>(undefined);
   const [selectedCityId, setSelectedCityId] = React.useState<string | undefined>(undefined);
 
+  const { data: banners, isLoading: isLoadingBanners, isError: isErrorBanners } = useQuery({
+    queryKey: ["home-banners"],
+    queryFn: listBanners,
+  });
+
   const handleSearch = () => {
     const params = new URLSearchParams();
     if (selectedType) params.set("tipo", selectedType);
@@ -45,13 +51,20 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-dark">
       <Navbar />
       
-      {/* Hero Slider with bottom-anchored search */}
+      {/* Hero Slider com conteúdo inferior ancorado */}
       <HeroSlider
-        slides={[
-          { srcDesktop: heroImage, srcMobile: "/slider/01-mobile.png", alt: "Ambiente de luxo" },
-          { srcDesktop: property1, srcMobile: "/slider/02-mobile.jpg", alt: "Apartamento moderno" },
-
-        ]}
+        slides={
+          (banners && banners.length > 0)
+            ? banners.map((b) => ({
+                srcDesktop: b.image_desktop,
+                srcMobile: b.image_mobile,
+                alt: b.alt ?? undefined,
+              }))
+            : [
+                { srcDesktop: heroImage, srcMobile: "/slider/01-mobile.png", alt: "Ambiente de luxo" },
+                { srcDesktop: property1, srcMobile: "/slider/02-mobile.jpg", alt: "Apartamento moderno" },
+              ]
+        }
         bottomContent={
           <div className="bg-gradient-card border border-border p-6 shadow-luxury relative top-4 sm:top-[-20px] z-10">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
