@@ -29,12 +29,12 @@ const HeroSlider = ({ slides, intervalMs = 6000, bottomContent, className }: Her
   const goNext = () => setCurrent((prev) => (prev + 1) % slides.length);
 
   return (
-    <section className={`relative h-[760px] sm:h-[650px] flex items-baseline justify-center overflow-hidden ${className ?? ""}`}> 
+    <section className={`relative h-[730px] sm:h-[650px] flex items-baseline justify-center overflow-hidden ${className ?? ""}`}> 
       {/* Slides */}
       {slides.map((slide, idx) => (
         <div
           key={idx}
-          className={`absolute h-auto mt-0 sm:mt-14 inset-0 transition-opacity duration-700 ease-out ${idx === current ? "opacity-100" : "opacity-0"}`}
+          className={`absolute h-auto mt-[-90px] sm:mt-14 inset-0 transition-opacity duration-700 ease-out ${idx === current ? "opacity-100" : "opacity-0"}`}
         >
           <picture>
             <source media="(min-width: 640px)" srcSet={slide.srcDesktop} />
@@ -59,7 +59,7 @@ const HeroSlider = ({ slides, intervalMs = 6000, bottomContent, className }: Her
 
       {/* Bottom anchored content (search section) */}
       {bottomContent ? (
-        <div className="absolute bottom-[-10px] left-1/2 -translate-x-1/2 w-full max-w-4xl px-4 z-10">
+        <div className="absolute bottom-[-10px] sm:bottom-[-20px] left-1/2 -translate-x-1/2 w-full max-w-4xl p-4 z-10 overflow-hidden">
           {bottomContent}
         </div>
       ) : null}
