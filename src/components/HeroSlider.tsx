@@ -29,7 +29,7 @@ const HeroSlider = ({ slides, intervalMs = 6000, bottomContent, className }: Her
   const goNext = () => setCurrent((prev) => (prev + 1) % slides.length);
 
   return (
-    <section className={`relative h-[760px] sm:h-[680px] flex items-center justify-center overflow-hidden ${className ?? ""}`}> 
+    <section className={`relative h-[760px] sm:h-[650px] flex items-baseline justify-center overflow-hidden ${className ?? ""}`}> 
       {/* Slides */}
       {slides.map((slide, idx) => (
         <div
@@ -38,7 +38,7 @@ const HeroSlider = ({ slides, intervalMs = 6000, bottomContent, className }: Her
         >
           <picture>
             <source media="(min-width: 640px)" srcSet={slide.srcDesktop} />
-            <img src={slide.srcMobile} alt={slide.alt ?? `slide-${idx}`} className="w-full h-full mt-[-70px]  object-contain sm:object-contain" />
+            <img src={slide.srcMobile} alt={slide.alt ?? `slide-${idx}`} className="w-full h-full object-contain sm:object-contain" />
           </picture>
         </div>
       ))}
@@ -55,21 +55,11 @@ const HeroSlider = ({ slides, intervalMs = 6000, bottomContent, className }: Her
         </Button>
       </div>
 
-      {/* Indicators */}
-      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-        {slides.map((_, idx) => (
-          <button
-            key={`dot-${idx}`}
-            aria-label={`Ir para slide ${idx + 1}`}
-            onClick={() => setCurrent(idx)}
-            className={`h-2.5 w-2.5 rounded-full border border-border transition-colors ${idx === current ? "bg-primary" : "bg-background/60 hover:bg-background"}`}
-          />
-        ))}
-      </div>
+
 
       {/* Bottom anchored content (search section) */}
       {bottomContent ? (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-full max-w-4xl px-4 z-10">
+        <div className="absolute bottom-[-10px] left-1/2 -translate-x-1/2 w-full max-w-4xl px-4 z-10">
           {bottomContent}
         </div>
       ) : null}

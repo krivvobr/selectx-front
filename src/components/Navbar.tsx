@@ -29,7 +29,7 @@ const Navbar = () => {
       </div>
 
       {/* Main Navigation */}
-      <div className="bg-background/95 backdrop-blur-sm border-b border-border">
+      <div className="bg-black backdrop-blur-sm border-b border-border">
         <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link to="/" className="flex items-center gap-3">
