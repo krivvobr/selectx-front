@@ -277,7 +277,7 @@ const Properties = () => {
 
               {isError && (
                 <div className="text-center text-red-500 py-8">
-                  Erro ao buscar imóveis: {String((error as any)?.message ?? "")}
+                  Erro ao buscar imóveis: {error instanceof Error ? error.message : String(error ?? "")}
                 </div>
               )}
 

@@ -100,7 +100,7 @@ const PropertyDetail = () => {
             <div className="text-center text-muted-foreground py-8">Carregando imóvel...</div>
           )}
           {isError && (
-            <div className="text-center text-red-500 py-8">Erro ao carregar imóvel: {String((error as any)?.message ?? "")}</div>
+            <div className="text-center text-red-500 py-8">Erro ao carregar imóvel: {error instanceof Error ? error.message : String(error ?? "")}</div>
           )}
           {!property && !isLoading && !isError && (
             <div className="text-center text-muted-foreground py-8">Imóvel não encontrado.</div>
@@ -147,6 +147,24 @@ const PropertyDetail = () => {
                 </Button>
               </div>
             </div>
+
+            {property.videoUrl && (
+              <div className="mt-8">
+                <Card className="bg-gradient-card border-border p-0 overflow-hidden">
+                  {/(youtube|youtu\.be)/i.test(property.videoUrl) ? (
+                    <iframe
+                      src={property.videoUrl}
+                      title="Tour em vídeo"
+                      className="w-full aspect-video"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <video src={property.videoUrl} controls className="w-full aspect-video" />
+                  )}
+                </Card>
+              </div>
+            )}
 
             <div className="grid grid-cols-5 gap-2">
               {images.map((image, index) => (

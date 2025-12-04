@@ -29,7 +29,7 @@ const Navbar = () => {
       </div>
 
       {/* Main Navigation */}
-      <div className="bg-black backdrop-blur-sm border-b border-border">
+      <div className="bg-background/40 backdrop-blur-md border-b border-border">
         <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link to="/" className="flex items-center gap-3">
@@ -38,16 +38,16 @@ const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
-            <Link to="/" className="text-foreground hover:text-primary transition-colors">
+            <Link to="/" className="text-foreground hover:text-primary transition-smooth">
               Início
             </Link>
-            <Link to="/imoveis" className="text-foreground hover:text-primary transition-colors">
+            <Link to="/imoveis" className="text-foreground hover:text-primary transition-smooth">
               Comprar
             </Link>
-            <Link to="/imoveis?tipo=locacao" className="text-foreground hover:text-primary transition-colors">
+            <Link to="/imoveis?tipo=locacao" className="text-foreground hover:text-primary transition-smooth">
               Alugar
             </Link>
-            <Link to="/imoveis?destaque=lancamentos" className="text-foreground hover:text-primary transition-colors">
+            <Link to="/imoveis?destaque=lancamentos" className="text-foreground hover:text-primary transition-smooth">
               Lançamentos
             </Link>
 
@@ -75,28 +75,28 @@ const Navbar = () => {
           <div className="md:hidden py-4 space-y-4 border-t border-border">
             <Link
               to="/"
-              className="block text-foreground hover:text-primary transition-colors"
+              className="block text-foreground hover:text-primary transition-smooth"
               onClick={() => setIsMenuOpen(false)}
             >
               Início
             </Link>
             <Link
               to="/imoveis"
-              className="block text-foreground hover:text-primary transition-colors"
+              className="block text-foreground hover:text-primary transition-smooth"
               onClick={() => setIsMenuOpen(false)}
             >
               Comprar
             </Link>
             <Link
               to="/imoveis?tipo=locacao"
-              className="block text-foreground hover:text-primary transition-colors"
+              className="block text-foreground hover:text-primary transition-smooth"
               onClick={() => setIsMenuOpen(false)}
             >
               Alugar
             </Link>
             <Link
               to="/imoveis?destaque=lancamentos"
-              className="block text-foreground hover:text-primary transition-colors"
+              className="block text-foreground hover:text-primary transition-smooth"
               onClick={() => setIsMenuOpen(false)}
             >
               Lançamentos

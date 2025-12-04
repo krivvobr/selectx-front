@@ -31,42 +31,48 @@ export interface PropertyDetail extends PropertyListItem {
     phone?: string;
     email?: string;
   };
+  videoUrl?: string;
+  virtualTourUrl?: string;
 }
 
-function mapRowToListItem(row: any): PropertyListItem {
+function mapRowToListItem(row: Record<string, unknown>): PropertyListItem {
   const locationParts = [];
-  if (row.address) locationParts.push(row.address);
-  if (row.cities?.name) locationParts.push(row.cities.name);
+  const address = row["address"] as string | undefined;
+  const cities = row["cities"] as { name?: string } | undefined;
+  if (address) locationParts.push(address);
+  if (cities?.name) locationParts.push(cities.name);
 
   return {
-    id: String(row.id),
-    cover_image: row.cover_image ?? row.image_url ?? "/placeholder.svg",
-    title: row.title ?? "Imóvel",
-    type: row.type ?? "",
+    id: String(row["id"]),
+    cover_image: (row["cover_image"] as string | undefined) ?? (row["image_url"] as string | undefined) ?? "/placeholder.svg",
+    title: (row["title"] as string | undefined) ?? "Imóvel",
+    type: (row["type"] as string | undefined) ?? "",
     location: locationParts.join(", "),
-    price: Number(row.price ?? 0),
-    purpose: (row.purpose as PropertyPurpose) ?? "venda",
-    bedrooms: Number(row.bedrooms ?? 0),
-    parking: Number(row.parking ?? 0),
-    area: Number(row.area ?? 0),
+    price: Number((row["price"] as number | string | undefined) ?? 0),
+    purpose: (row["purpose"] as PropertyPurpose | undefined) ?? "venda",
+    bedrooms: Number((row["bedrooms"] as number | string | undefined) ?? 0),
+    parking: Number((row["parking"] as number | string | undefined) ?? 0),
+    area: Number((row["area"] as number | string | undefined) ?? 0),
   };
 }
 
-function mapRowToDetail(row: any): PropertyDetail {
+function mapRowToDetail(row: Record<string, unknown>): PropertyDetail {
   const base = mapRowToListItem(row);
   return {
     ...base,
-    code: row.code ?? undefined,
-    suites: row.suites ?? undefined,
-    bathrooms: row.bathrooms ?? undefined,
-    totalArea: row.total_area ?? undefined,
-    floor: row.floor ?? undefined,
-    furnished: row.furnished ?? undefined,
-    financing: row.financing ?? undefined,
-    description: row.description ?? undefined,
-    amenities: (row.amenities as string[]) ?? undefined,
-    images: (row.images as string[]) ?? (row.cover_image ? [row.cover_image] : undefined),
-    broker: row.broker ?? undefined,
+    code: (row["code"] as string | undefined) ?? undefined,
+    suites: (row["suites"] as number | undefined) ?? undefined,
+    bathrooms: (row["bathrooms"] as number | undefined) ?? undefined,
+    totalArea: (row["total_area"] as number | undefined) ?? undefined,
+    floor: (row["floor"] as number | undefined) ?? undefined,
+    furnished: (row["furnished"] as boolean | undefined) ?? undefined,
+    financing: (row["financing"] as boolean | undefined) ?? undefined,
+    description: (row["description"] as string | undefined) ?? undefined,
+    amenities: (row["amenities"] as string[] | undefined) ?? undefined,
+    images: (row["images"] as string[] | undefined) ?? ((row["cover_image"] as string | undefined) ? [row["cover_image"] as string] : undefined),
+    broker: row["broker"] as { name?: string; phone?: string; email?: string } | undefined,
+    videoUrl: row["video_url"] as string | undefined,
+    virtualTourUrl: row["virtual_tour_url"] as string | undefined,
   };
 }
 

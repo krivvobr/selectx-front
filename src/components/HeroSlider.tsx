@@ -17,6 +17,7 @@ interface HeroSliderProps {
 
 const HeroSlider = ({ slides, intervalMs = 6000, bottomContent, className }: HeroSliderProps) => {
   const [current, setCurrent] = useState(0);
+  const [parallaxY, setParallaxY] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -24,6 +25,16 @@ const HeroSlider = ({ slides, intervalMs = 6000, bottomContent, className }: Her
     }, intervalMs);
     return () => clearInterval(timer);
   }, [slides.length, intervalMs]);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      const clamped = Math.max(0, Math.min(y, 200));
+      setParallaxY(clamped);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const goPrev = () => setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
   const goNext = () => setCurrent((prev) => (prev + 1) % slides.length);
@@ -35,6 +46,7 @@ const HeroSlider = ({ slides, intervalMs = 6000, bottomContent, className }: Her
         <div
           key={idx}
           className={`absolute h-auto mt-[-90px] sm:mt-14 inset-0 transition-opacity duration-700 ease-out ${idx === current ? "opacity-100" : "opacity-0"}`}
+          style={idx === current ? { transform: `translateY(${parallaxY * 0.15}px)`, willChange: "transform" } : undefined}
         >
           <picture>
             <source media="(min-width: 640px)" srcSet={slide.srcDesktop} />

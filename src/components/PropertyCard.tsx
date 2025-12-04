@@ -33,12 +33,12 @@ const PropertyCard = ({
   }).format(price);
 
   return (
-    <div className="group bg-gradient-card overflow-hidden border border-border hover:border-primary/50 transition-all duration-300 shadow-card hover:shadow-luxury">
+    <div className="group bg-gradient-card overflow-hidden border border-border hover:border-primary/50 transition-smooth shadow-card hover:shadow-luxury hover:-translate-y-1">
       <div className="relative overflow-hidden aspect-[4/3]">
         <img
           src={cover_image}
           alt={title}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          className="w-full h-full object-cover transition-smooth group-hover:scale-110"
         />
         <div className="absolute top-4 left-4">
           <span className="bg-gradient-gold text-primary-foreground px-3 py-1 text-xs font-semibold uppercase shadow-gold">
@@ -83,10 +83,10 @@ const PropertyCard = ({
             <p className="text-xs text-muted-foreground mb-1">
               {purpose === "venda" ? "Valor" : "Mensal"}
             </p>
-            <p className="text-xl font-bold text-primary">{formattedPrice}</p>
+            <p className="text-xl font-bold text-primary font-serif">{formattedPrice}</p>
           </div>
           <Link to={`/imovel/${id}`}>
-            <Button variant="outline" size="sm">
+            <Button variant="luxury" size="sm">
               Ver Detalhes
             </Button>
           </Link>

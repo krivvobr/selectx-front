@@ -115,6 +115,14 @@ const Index = () => {
                 Buscar
               </Button>
             </div>
+            <div className="mt-5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+              <p className="text-muted-foreground text-sm">Atendimento exclusivo e discreto para clientes seletos.</p>
+              <Button variant="luxury" size="lg" asChild>
+                <a href="https://wa.me/554832633090?text=Gostaria%20de%20agendar%20uma%20visita%20exclusiva" target="_blank" rel="noopener noreferrer">
+                  Agendar visita exclusiva
+                </a>
+              </Button>
+            </div>
           </div>
         }
       />
@@ -138,7 +146,7 @@ const Index = () => {
           )}
           {isError && (
             <div className="text-center text-red-500 py-8">
-              Erro ao carregar imóveis: {String((error as any)?.message ?? "")}
+              Erro ao carregar imóveis: {error instanceof Error ? error.message : String(error ?? "")}
             </div>
           )}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -148,8 +156,8 @@ const Index = () => {
           </div>
 
           <div className="text-center mt-12">
-            <Link to="/imoveis" className="text-primary underline-offset-4 hover:underline border border-gray-500 p-4 px-4 ">
-              Ver Todos os Imóveis
+            <Link to="/imoveis" className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-border text-foreground hover:border-primary hover:text-primary transition-smooth shadow-card">
+              Ver todos os imóveis
             </Link>
           </div>
         </div>
